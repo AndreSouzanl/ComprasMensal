@@ -28,8 +28,9 @@ export default function Pagina() {
       alert("Os campos nome e quantidade são obrigatórios.");
       return;
     }
-
-    if (produtos.some((p) => p.nome === nome)) {
+    // Já existe um produto com este nome (ignorando letras maiúsculas/minúsculas).
+    // mantem a ordenação em ordem alfabetica.
+    if (produtos.some((p) => p.nome.toLowerCase() === nome.toLowerCase())) {
       alert("Já existe um produto com este nome.");
       return;
     }
@@ -40,8 +41,10 @@ export default function Pagina() {
       quantidade,
       edit: false,
     };
-     
-    setProdutos([...produtos, novoProduto]);
+
+    const novaLista = [...produtos, novoProduto];
+    novaLista.sort((a, b) => a.nome.localeCompare(b.nome));
+    setProdutos(novaLista);
     setNome("");
     setQuantidade("");
   }
@@ -52,9 +55,8 @@ export default function Pagina() {
       return produto.id !== id;
     });
     setProdutos(novoProduto);
-    console.log(novoProduto);
   }
-
+  // prepara para edição jogando itens serem editados nos inputs
   function EditProduto(id) {
     const produtoEditado = produtos.find((p) => p.id === id);
 
@@ -75,7 +77,7 @@ export default function Pagina() {
       }, 100);
     }
   }
-
+  // finaliza a edição atraves do botao salva edicao
   function SalvarEdicao() {
     const produtoEditando = produtos.find((p) => p.edit);
 
@@ -85,7 +87,8 @@ export default function Pagina() {
           ? { ...produto, nome, quantidade, edit: false }
           : produto
       );
-      
+      //mantem ordem alfabetica apos edição
+      produtosAtualizados.sort((a, b) => a.nome.localeCompare(b.nome));
       setProdutos(produtosAtualizados);
       setEditando(false); // Finaliza edição
       setNome("");
@@ -146,4 +149,3 @@ export default function Pagina() {
     </>
   );
 }
-
