@@ -1,6 +1,6 @@
 .container-Produto {
   /* background-color: rgb(67, 67, 69); */
-  border: 1px solid #fff;
+  
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -29,3 +29,4 @@
   border-radius: 10px;
   transition: background-color 0.3s ease;
 }
+
