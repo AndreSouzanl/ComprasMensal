@@ -29,7 +29,6 @@ export default function Pagina() {
       return;
     }
     // Já existe um produto com este nome (ignorando letras maiúsculas/minúsculas).
-    // mantem a ordenação em ordem alfabetica.
     if (produtos.some((p) => p.nome.toLowerCase() === nome.toLowerCase())) {
       alert("Já existe um produto com este nome.");
       return;
@@ -43,6 +42,7 @@ export default function Pagina() {
     };
 
     const novaLista = [...produtos, novoProduto];
+    // mantem a ordenação em ordem alfabetica.
     novaLista.sort((a, b) => a.nome.localeCompare(b.nome));
     setProdutos(novaLista);
     setNome("");

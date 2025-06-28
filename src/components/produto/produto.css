@@ -9,8 +9,11 @@
 }
 
 .tabela-container {
-  width: 100%;
-  overflow-x: auto; /* permite rolar lateralmente em telas pequenas */
+ width: 100%;
+ overflow-x: auto; /* permite rolar lateralmente em telas pequenas */
+
+
+ 
 }
 
 .tabela-produto {
@@ -25,6 +28,9 @@
   border: 1px solid #444;
   padding: 8px 12px;
   text-align: left;
+   width:100%;
+   white-space: nowrap
+   
 }
 
 .produto-acoes {
