@@ -17,6 +17,7 @@ export default function Pagina() {
 
   const formRef = useRef(null);
 
+  // Exibir e limpar mensagens
   useEffect(() => {
     if (mensagem.texto) {
       const timer = setTimeout(() => {
@@ -25,108 +26,99 @@ export default function Pagina() {
       return () => clearTimeout(timer);
     }
   }, [mensagem]);
-  // Carrega as tarefas do localStorage quando o componente monta
+
+  // Carrega produtos do localStorage ao iniciar
   useEffect(() => {
     const ProdutosSalvos = localStorage.getItem("produtos");
     if (ProdutosSalvos) {
       setProdutos(JSON.parse(ProdutosSalvos));
     }
   }, []);
-  // Salva as tarefas no localStorage sempre que elas mudam
+
+  // Salva produtos no localStorage sempre que mudarem
   useEffect(() => {
     localStorage.setItem("produtos", JSON.stringify(produtos));
   }, [produtos]);
 
-  // criando paginação
-  const itensPorPagina = 4;
-  const totalPaginas = Math.ceil(produtos.length / itensPorPagina);
+  // Paginação
+  const itensPorPagina = 10;
+  const totalPaginas = Math.max(1, Math.ceil(produtos.length / itensPorPagina));
   const inicio = (paginaAtual - 1) * itensPorPagina;
   const fim = inicio + itensPorPagina;
   const produtosPaginados = produtos.slice(inicio, fim);
 
-  // Adiciona o produto na lista
+  // Corrigir paginaAtual caso a lista diminua
+  useEffect(() => {
+    if (paginaAtual > totalPaginas) {
+      setPaginaAtual(totalPaginas);
+    }
+  }, [paginaAtual, produtos, totalPaginas]);
+
+  // Scroll para o topo ao trocar de página
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [paginaAtual]);
+
+  // Adicionar novo produto
   function AddProdutos() {
     if (nome === "" || quantidade === "") {
-      setMensagem({
-        texto: "Os campos nome e quantidade são obrigatórios.",
-        tipo: "aviso",
-      });
+      setMensagem({ texto: "Os campos nome e quantidade são obrigatórios.", tipo: "aviso" });
       return;
     }
-    // Já existe um produto com este nome (ignorando letras maiúsculas/minúsculas).
     if (produtos.some((p) => p.nome.toLowerCase() === nome.toLowerCase())) {
-      setMensagem({
-        texto: "Já existe um produto com este nome.",
-        tipo: "aviso",
-      });
+      setMensagem({ texto: "Já existe um produto com este nome.", tipo: "aviso" });
       return;
     }
 
-    const novoProduto = {
-      id: uuid(),
-      nome,
-      quantidade,
-      edit: false,
-    };
-
-    const novaLista = [...produtos, novoProduto];
-    // mantem a ordenação em ordem alfabetica.
-    novaLista.sort((a, b) => a.nome.localeCompare(b.nome));
+    const novoProduto = { id: uuid(), nome, quantidade, edit: false };
+    const novaLista = [...produtos, novoProduto].sort((a, b) => a.nome.localeCompare(b.nome));
     setProdutos(novaLista);
     setNome("");
     setQuantidade("");
-
     setMensagem({ texto: "Produto Cadastrado com Sucesso!", tipo: "sucesso" });
   }
 
-  //deleta um produto
+  // Deletar produto
   function DeleteProduto(id) {
-    const novoProduto = produtos.filter((produto) => {
-      return produto.id !== id;
-    });
-    setProdutos(novoProduto);
+    const novaLista = produtos.filter((produto) => produto.id !== id);
+    setProdutos(novaLista);
     setMensagem({ texto: "Produto Removido Com Sucesso!", tipo: "erro" });
   }
-  // prepara para edição jogando itens serem editados nos inputs
+
+  // Editar produto (preenche inputs)
   function EditProduto(id) {
     const produtoEditado = produtos.find((p) => p.id === id);
-
     if (produtoEditado) {
-      // Preenche os campos de edição
       setNome(produtoEditado.nome);
       setQuantidade(produtoEditado.quantidade);
-      setEditando(true); // Marca como edição
-
-      // Atualiza a lista de produtos para marcar qual está em edição
+      setEditando(true);
       const produtosAtualizados = produtos.map((p) =>
         p.id === id ? { ...p, edit: true } : { ...p, edit: false }
       );
       setProdutos(produtosAtualizados);
-      // Scroll suave até os inputs
       setTimeout(() => {
         formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
     }
   }
-  // finaliza a edição atraves do botao salva edicao
+
+  // Salvar edição
   function SalvarEdicao() {
     const produtoEditando = produtos.find((p) => p.edit);
-
     if (produtoEditando) {
       const produtosAtualizados = produtos.map((produto) =>
         produto.id === produtoEditando.id
           ? { ...produto, nome, quantidade, edit: false }
           : produto
-      );
-      //mantem ordem alfabetica apos edição
-      produtosAtualizados.sort((a, b) => a.nome.localeCompare(b.nome));
+      ).sort((a, b) => a.nome.localeCompare(b.nome));
       setProdutos(produtosAtualizados);
-      setEditando(false); // Finaliza edição
+      setEditando(false);
       setNome("");
       setQuantidade("");
     }
   }
 
+  // Marcar produto como "checado"
   function checkProduto(id) {
     const atualizados = produtos.map((p) =>
       p.id === id ? { ...p, checado: !p.checado } : p
@@ -135,89 +127,87 @@ export default function Pagina() {
   }
 
   return (
-    <>
-      <div className="container-main">
-        <Header
-          icone={<IconHome size={28} />}
-          titulo="Minha Lista de Compras"
-        />
+    <div className="container-main">
+      <Header icone={<IconHome size={28} />} titulo="Minha Lista de Compras" />
 
-        <ExibirMensagem mensagem={mensagem} />
+      <ExibirMensagem mensagem={mensagem} />
 
-        <main>
-          <div className="container-Produto">
-            <div className="formInput" ref={formRef}>
-              <input
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                className="input"
-                type="text"
-                name="nome"
-                id="nome"
-                placeholder="Nome Produto"
-              />
+      <main>
+        <div className="container-Produto">
+          <div className="formInput" ref={formRef}>
+            <input
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              className="input"
+              type="text"
+              placeholder="Nome Produto"
+            />
+            <input
+              value={quantidade}
+              onChange={(e) => setQuantidade(e.target.value)}
+              className="input"
+              type="text"
+              placeholder="Quantidade + (kg, g, ptc. un)"
+            />
+            <button
+              className={`produto-btn ${editando ? "editar" : "adicionar"}`}
+              onClick={editando ? SalvarEdicao : AddProdutos}
+            >
+              {editando ? "Salvar Produto" : "Adicionar Produto"}
+            </button>
 
-              <input
-                value={quantidade}
-                onChange={(e) => setQuantidade(e.target.value)}
-                className="input"
-                type="text"
-                name="quantidade"
-                id="quantidade"
-                placeholder="Quantidade +  (kg, g, ptc. un)"
-              />
-
-              <button
-                className={`produto-btn ${editando ? "editar" : "adicionar"}`}
-                onClick={editando ? SalvarEdicao : AddProdutos}
-              >
-                {editando ? "Salvar Produto" : "Adicionar Produto"}
-              </button>
-
-              <div>
-                {produtos.length === 0 ? (
-                  <p className="mensagem-vazia">Nenhum Produto Cadastrado.</p>
-                ) : (
-                  produtosPaginados.map((produto) => {
-                    return (
+            {produtos.length === 0 ? (
+              <p className="mensagem-vazia">Nenhum Produto Cadastrado.</p>
+            ) : (
+              <div className="tabela-container">
+                <table className="tabela-produto">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Quantidade</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {produtosPaginados.map((produto) => (
                       <Produto
                         key={produto.id}
-                        id={produto.id} 
+                        id={produto.id}
                         nome={produto.nome}
                         checado={produto.checado}
                         quantidade={produto.quantidade}
                         onClickDelete={DeleteProduto}
                         onClickEdit={EditProduto}
-                       onCheck={checkProduto}
+                        onCheck={checkProduto}
                       />
-                    );
-                  })
-                )}
+                    ))}
+                  </tbody>
+                </table>
               </div>
-              <div className="paginacao">
-                <button
-                  onClick={() => setPaginaAtual((p) => Math.max(p - 1, 1))}
-                  disabled={paginaAtual === 1}
-                >
-                  <IconMinus size={20} />
-                </button>
-                <span className="texto">
-                  Página {paginaAtual} de {totalPaginas}
-                </span>
-                <button
-                  onClick={() =>
-                    setPaginaAtual((p) => Math.min(p + 1, totalPaginas))
-                  }
-                  disabled={paginaAtual === totalPaginas}
-                >
-                  <IconPlus />
-                </button>
-              </div>
+            )}
+
+            <div className="paginacao">
+              <button
+                onClick={() => setPaginaAtual((p) => Math.max(p - 1, 1))}
+                disabled={paginaAtual === 1}
+              >
+                <IconMinus size={20} />
+              </button>
+              <span className="texto">
+                Página {paginaAtual} de {totalPaginas}
+              </span>
+              <button
+                onClick={() => setPaginaAtual((p) => Math.min(p + 1, totalPaginas))}
+                disabled={paginaAtual === totalPaginas}
+              >
+                <IconPlus size={20} />
+              </button>
             </div>
           </div>
-        </main>
-        <Footer texto="Desenvolvido por: André souza Junho 2025" />
-      </div>
-    </>
+        </div>
+      </main>
+
+      <Footer texto="Desenvolvido por: André souza Junho 2025" />
+    </div>
   );
 }

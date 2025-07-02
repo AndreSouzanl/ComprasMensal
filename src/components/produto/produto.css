@@ -1,33 +1,4 @@
-.container-lista-produto {
-  width: 100%;
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  margin: 10px auto;
-}
 
-.tabela-container {
-  width: 100%;
-  
-}
-
-.tabela-produto {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: rgb(43, 43, 44);
-  color: white;
-}
-
-.tabela-produto th,
-.tabela-produto td {
-  border: 1px solid #444;
-  padding: 8px 12px;
-  text-align: left;
-  width: 100%;
-  font-size: 1.4rem;
-}
 .produto-acoes {
   display: flex;
   gap: 10px;
@@ -59,10 +30,4 @@
   opacity: 0.7;
 }
 
-@media (max-width: 600px) {
-  .tabela-produto th,
-  .tabela-produto td {
-    font-size: 18px;
-    padding: 8px 12px;
-  }
-}
+
