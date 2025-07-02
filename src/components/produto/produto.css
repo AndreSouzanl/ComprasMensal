@@ -29,5 +29,15 @@
   color: #999;
   opacity: 0.7;
 }
+@media (max-width: 600px) {
+  .produto-acoes {
+    justify-content: space-around;
+  }
+
+  .produto-acoes svg {
+    width: 20px;
+    height: 20px;
+  }
+}
 
 
