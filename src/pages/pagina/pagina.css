@@ -1,5 +1,4 @@
 .container-Produto {
-  /* background-color: rgb(67, 67, 69); */
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -55,12 +54,12 @@
 }
 
 .paginacao button:disabled {
-  background-color:#ccc;
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
-.texto{
-  color:white
+.texto {
+  color: white;
 }
 
 .container-lista-produto {
@@ -75,7 +74,7 @@
 
 .tabela-container {
   width: 100%;
-  
+  overflow-x: auto; /* Habilita a rolagem lateral para telas pequenas */
 }
 
 .tabela-produto {
@@ -88,12 +87,11 @@
 .tabela-produto th,
 .tabela-produto td {
   border: 1px solid #444;
-  padding: 8px 12px;
+  padding: 10px 12px; /* Aumentando o espaçamento para melhor visualização */
   text-align: left;
-  /* width: 100%; */
   font-size: 1.4rem;
+  white-space: nowrap; /* Impede quebra de linha nas células */
 }
-
 
 @media (max-width: 600px) {
   .formInput {
@@ -103,11 +101,12 @@
   }
 
   .container-Produto {
-    padding: 15px;
+    padding: 20px;
   }
+
   .tabela-produto th,
   .tabela-produto td {
-    font-size: 18px;
-    padding: 8px px;
+    font-size: 16px; 
+    padding: 8px 10px;
   }
 }
