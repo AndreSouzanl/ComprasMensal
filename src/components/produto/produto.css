@@ -6,7 +6,6 @@
   align-items: center;
   color: white;
   margin: 10px auto;
-   
 }
 
 .tabela-container {
@@ -26,16 +25,22 @@
   border: 1px solid #444;
   padding: 8px 12px;
   text-align: left;
-  width: 100%;
-  white-space: nowrap;
+  white-space: normal; /* Permite múltiplas linhas */
+  word-break: break-word; /* Evita estouro */
 }
+
+.tabela-produto td {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 .produto-acoes {
   display: flex;
   gap: 10px;
   justify-content: center;
   align-items: center;
-  
 }
 
 .produto-acoes svg {
@@ -50,7 +55,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  
 }
 
 .produto-btn.editar {
@@ -63,12 +67,10 @@
   opacity: 0.7;
 }
 
-
 @media (max-width: 600px) {
   .tabela-produto th,
   .tabela-produto td {
     font-size: 14px;
     padding: 6px 8px;
-    font-size: 1.2rem
   }
 }

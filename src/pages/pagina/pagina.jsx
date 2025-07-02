@@ -182,7 +182,7 @@ export default function Pagina() {
                     return (
                       <Produto
                         key={produto.id}
-                        id={produto.id}
+                        id={produto.id} 
                         nome={produto.nome}
                         checado={produto.checado}
                         quantidade={produto.quantidade}
