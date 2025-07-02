@@ -2,6 +2,7 @@
   background-color: #4f4f4f;
   color: #fff;
   padding: 2rem;
+  width:100%
 }
 
 .header-content {
@@ -9,4 +10,15 @@
   align-items: center;
   justify-content: center;
   gap: 10px; /* espaço entre ícone e título */
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .header-content {
+    flex-direction: column;
+  }
 }
