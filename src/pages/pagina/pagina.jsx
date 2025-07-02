@@ -127,6 +127,13 @@ export default function Pagina() {
     }
   }
 
+  function checkProduto(id) {
+    const atualizados = produtos.map((p) =>
+      p.id === id ? { ...p, checado: !p.checado } : p
+    );
+    setProdutos(atualizados);
+  }
+
   return (
     <>
       <div className="container-main">
@@ -177,9 +184,11 @@ export default function Pagina() {
                         key={produto.id}
                         id={produto.id}
                         nome={produto.nome}
+                        checado={produto.checado}
                         quantidade={produto.quantidade}
                         onClickDelete={DeleteProduto}
                         onClickEdit={EditProduto}
+                       onCheck={checkProduto}
                       />
                     );
                   })
@@ -201,7 +210,7 @@ export default function Pagina() {
                   }
                   disabled={paginaAtual === totalPaginas}
                 >
-                 <IconPlus />
+                  <IconPlus />
                 </button>
               </div>
             </div>

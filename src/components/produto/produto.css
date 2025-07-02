@@ -35,6 +35,7 @@
   gap: 10px;
   justify-content: center;
   align-items: center;
+  
 }
 
 .produto-acoes svg {
@@ -49,11 +50,19 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  
 }
 
 .produto-btn.editar {
   background-color: green;
 }
+
+.riscado {
+  text-decoration: line-through;
+  color: #999;
+  opacity: 0.7;
+}
+
 
 @media (max-width: 600px) {
   .tabela-produto th,

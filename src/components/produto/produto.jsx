@@ -1,4 +1,4 @@
-import { IconTrash, IconEdit } from "@tabler/icons-react";
+import { IconTrash, IconEdit, IconCheck } from "@tabler/icons-react";
 import "./produto.css";
 export default function Produto(props) {
   return (
@@ -14,8 +14,9 @@ export default function Produto(props) {
           </thead>
           <tbody>
             <tr>
-              <td>{props.nome}</td>
-              <td>{props.quantidade}</td>
+              <td className={props.checado ? "riscado" : ""}>{props.nome}</td>
+              <td className={props.checado ? "riscado" : ""}>{props.quantidade}</td>
+
               <td>
                 <div className="produto-acoes">
                   <IconEdit
@@ -28,6 +29,13 @@ export default function Produto(props) {
                     stroke={1}
                     color="red"
                     onClick={(e) => props.onClickDelete(props.id)}
+                  />
+
+                  <IconCheck
+                    size={20}
+                    stroke={1}
+                    color="#f39c12"
+                    onClick={(e) => props.onCheck(props.id)}
                   />
                 </div>
               </td>
