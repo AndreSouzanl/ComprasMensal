@@ -37,6 +37,34 @@
   color: #666;
 }
 
+.paginacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.paginacao button {
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background-color: #3498db;
+  color: white;
+}
+
+.paginacao button:disabled {
+  background-color:#ccc;
+  cursor: not-allowed;
+}
+
+.texto{
+  color:white
+}
+
+
 @media (max-width: 600px) {
   .formInput {
     width: 100%;

@@ -4,7 +4,7 @@ import "./pagina.css";
 import { v4 as uuid } from "uuid";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
-import { IconHome } from "@tabler/icons-react";
+import { IconHome, IconMinus, IconPlus } from "@tabler/icons-react";
 import ExibirMensagem from "../../components/exibir-mensagem/exibir-mensagem.jsx";
 
 export default function Pagina() {
@@ -12,18 +12,19 @@ export default function Pagina() {
   const [nome, setNome] = useState("");
   const [quantidade, setQuantidade] = useState("");
   const [editando, setEditando] = useState(false);
- const [mensagem, setMensagem] = useState({ texto: "", tipo: "" });
+  const [mensagem, setMensagem] = useState({ texto: "", tipo: "" });
+  const [paginaAtual, setPaginaAtual] = useState(1);
 
   const formRef = useRef(null);
 
   useEffect(() => {
-  if (mensagem.texto) {
-    const timer = setTimeout(() => {
-      setMensagem({ texto: "", tipo: "" });
-    }, 3000);
-    return () => clearTimeout(timer);
-  }
-}, [mensagem]);
+    if (mensagem.texto) {
+      const timer = setTimeout(() => {
+        setMensagem({ texto: "", tipo: "" });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [mensagem]);
   // Carrega as tarefas do localStorage quando o componente monta
   useEffect(() => {
     const ProdutosSalvos = localStorage.getItem("produtos");
@@ -36,16 +37,28 @@ export default function Pagina() {
     localStorage.setItem("produtos", JSON.stringify(produtos));
   }, [produtos]);
 
+  // criando paginação
+  const itensPorPagina = 4;
+  const totalPaginas = Math.ceil(produtos.length / itensPorPagina);
+  const inicio = (paginaAtual - 1) * itensPorPagina;
+  const fim = inicio + itensPorPagina;
+  const produtosPaginados = produtos.slice(inicio, fim);
+
   // Adiciona o produto na lista
   function AddProdutos() {
     if (nome === "" || quantidade === "") {
-      setMensagem({texto: "Os campos nome e quantidade são obrigatórios.", tipo:"aviso"
+      setMensagem({
+        texto: "Os campos nome e quantidade são obrigatórios.",
+        tipo: "aviso",
       });
       return;
     }
     // Já existe um produto com este nome (ignorando letras maiúsculas/minúsculas).
     if (produtos.some((p) => p.nome.toLowerCase() === nome.toLowerCase())) {
-      setMensagem({texto:"Já existe um produto com este nome.", tipo:"aviso"});
+      setMensagem({
+        texto: "Já existe um produto com este nome.",
+        tipo: "aviso",
+      });
       return;
     }
 
@@ -62,8 +75,8 @@ export default function Pagina() {
     setProdutos(novaLista);
     setNome("");
     setQuantidade("");
-    
-    setMensagem({texto:"Produto Cadastrado com Sucesso!", tipo:"sucesso"})
+
+    setMensagem({ texto: "Produto Cadastrado com Sucesso!", tipo: "sucesso" });
   }
 
   //deleta um produto
@@ -72,7 +85,7 @@ export default function Pagina() {
       return produto.id !== id;
     });
     setProdutos(novoProduto);
-    setMensagem({texto:"Produto Removido Com Sucesso!", tipo:"erro"})
+    setMensagem({ texto: "Produto Removido Com Sucesso!", tipo: "erro" });
   }
   // prepara para edição jogando itens serem editados nos inputs
   function EditProduto(id) {
@@ -120,11 +133,9 @@ export default function Pagina() {
         <Header
           icone={<IconHome size={28} />}
           titulo="Minha Lista de Compras"
-          
         />
-         
-        <ExibirMensagem mensagem = {mensagem} />
-      
+
+        <ExibirMensagem mensagem={mensagem} />
 
         <main>
           <div className="container-Produto">
@@ -160,7 +171,7 @@ export default function Pagina() {
                 {produtos.length === 0 ? (
                   <p className="mensagem-vazia">Nenhum Produto Cadastrado.</p>
                 ) : (
-                  produtos.map((produto) => {
+                  produtosPaginados.map((produto) => {
                     return (
                       <Produto
                         key={produto.id}
@@ -174,10 +185,27 @@ export default function Pagina() {
                   })
                 )}
               </div>
-               
+              <div className="paginacao">
+                <button
+                  onClick={() => setPaginaAtual((p) => Math.max(p - 1, 1))}
+                  disabled={paginaAtual === 1}
+                >
+                  <IconMinus size={20} />
+                </button>
+                <span className="texto">
+                  Página {paginaAtual} de {totalPaginas}
+                </span>
+                <button
+                  onClick={() =>
+                    setPaginaAtual((p) => Math.min(p + 1, totalPaginas))
+                  }
+                  disabled={paginaAtual === totalPaginas}
+                >
+                 <IconPlus />
+                </button>
+              </div>
             </div>
           </div>
-        
         </main>
         <Footer texto="Desenvolvido por: André souza Junho 2025" />
       </div>
