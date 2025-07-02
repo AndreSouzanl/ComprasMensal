@@ -25,17 +25,10 @@
   border: 1px solid #444;
   padding: 8px 12px;
   text-align: left;
-  white-space: normal; /* Permite múltiplas linhas */
-  word-break: break-word; /* Evita estouro */
+  width:100%;
+  font-size:1.4rem
+
 }
-
-.tabela-produto td {
-  max-width: 250px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-
 .produto-acoes {
   display: flex;
   gap: 10px;
@@ -70,7 +63,10 @@
 @media (max-width: 600px) {
   .tabela-produto th,
   .tabela-produto td {
-    font-size: 14px;
+    font-size: 18px;
     padding: 6px 8px;
+    min-width: 100px; 
+    max-width: 250px;
+
   }
 }
