@@ -10,7 +10,7 @@
 
 .tabela-container {
   width: 100%;
-  overflow-x: auto; /* permite rolar lateralmente em telas pequenas */
+  overflow-x: auto; 
 }
 
 .tabela-produto {
@@ -65,8 +65,7 @@
   .tabela-produto td {
     font-size: 18px;
     padding: 6px 8px;
-    min-width: 100px; 
-    max-width: 250px;
+    
 
   }
 }
