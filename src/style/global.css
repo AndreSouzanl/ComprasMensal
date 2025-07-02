@@ -1,17 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
 
-* {
+*{
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-  background-color: rgb(44, 44, 47);
-  color: #fff;
-  font-family: "Poppins";
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  background-color: #363636;
 }
 
 .input {
@@ -30,4 +31,14 @@ body {
   outline: none;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
   focus: ring-opacity-30;
+}
+
+.container-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* altura mínima da tela */
+}
+
+main {
+  flex: 1;
 }

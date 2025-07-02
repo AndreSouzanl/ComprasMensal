@@ -2,14 +2,28 @@ import { useState, useRef, useEffect } from "react";
 import Produto from "../../components/produto/produto";
 import "./pagina.css";
 import { v4 as uuid } from "uuid";
+import Header from "../../components/header/header";
+import Footer from "../../components/footer/footer";
+import { IconHome } from "@tabler/icons-react";
+import ExibirMensagem from "../../components/exibir-mensagem/exibir-mensagem.jsx";
+
 export default function Pagina() {
   const [produtos, setProdutos] = useState([]);
   const [nome, setNome] = useState("");
   const [quantidade, setQuantidade] = useState("");
   const [editando, setEditando] = useState(false);
+ const [mensagem, setMensagem] = useState({ texto: "", tipo: "" });
 
   const formRef = useRef(null);
 
+  useEffect(() => {
+  if (mensagem.texto) {
+    const timer = setTimeout(() => {
+      setMensagem({ texto: "", tipo: "" });
+    }, 3000);
+    return () => clearTimeout(timer);
+  }
+}, [mensagem]);
   // Carrega as tarefas do localStorage quando o componente monta
   useEffect(() => {
     const ProdutosSalvos = localStorage.getItem("produtos");
@@ -25,12 +39,13 @@ export default function Pagina() {
   // Adiciona o produto na lista
   function AddProdutos() {
     if (nome === "" || quantidade === "") {
-      alert("Os campos nome e quantidade são obrigatórios.");
+      setMensagem({texto: "Os campos nome e quantidade são obrigatórios.", tipo:"aviso"
+      });
       return;
     }
     // Já existe um produto com este nome (ignorando letras maiúsculas/minúsculas).
     if (produtos.some((p) => p.nome.toLowerCase() === nome.toLowerCase())) {
-      alert("Já existe um produto com este nome.");
+      setMensagem({texto:"Já existe um produto com este nome.", tipo:"aviso"});
       return;
     }
 
@@ -47,6 +62,8 @@ export default function Pagina() {
     setProdutos(novaLista);
     setNome("");
     setQuantidade("");
+    
+    setMensagem({texto:"Produto Cadastrado com Sucesso!", tipo:"sucesso"})
   }
 
   //deleta um produto
@@ -55,6 +72,7 @@ export default function Pagina() {
       return produto.id !== id;
     });
     setProdutos(novoProduto);
+    setMensagem({texto:"Produto Removido Com Sucesso!", tipo:"erro"})
   }
   // prepara para edição jogando itens serem editados nos inputs
   function EditProduto(id) {
@@ -98,53 +116,70 @@ export default function Pagina() {
 
   return (
     <>
-      <div className="container-Produto">
-        <h1>Lista de Compras</h1>
+      <div className="container-main">
+        <Header
+          icone={<IconHome size={28} />}
+          titulo="Minha Lista de Compras"
+          
+        />
+         
+        <ExibirMensagem mensagem = {mensagem} />
+      
 
-        <div className="formInput" ref={formRef}>
-          <input
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            className="input"
-            type="text"
-            name="nome"
-            id="nome"
-            placeholder="Informe o nome do Produto"
-          />
+        <main>
+          <div className="container-Produto">
+            <div className="formInput" ref={formRef}>
+              <input
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                className="input"
+                type="text"
+                name="nome"
+                id="nome"
+                placeholder="Nome Produto"
+              />
 
-          <input
-            value={quantidade}
-            onChange={(e) => setQuantidade(e.target.value)}
-            className="input"
-            type="text"
-            name="quantidade"
-            id="quantidade"
-            placeholder="Informe a quantidade (kg, g, ptc. un)"
-          />
+              <input
+                value={quantidade}
+                onChange={(e) => setQuantidade(e.target.value)}
+                className="input"
+                type="text"
+                name="quantidade"
+                id="quantidade"
+                placeholder="Quantidade +  (kg, g, ptc. un)"
+              />
 
-          <button
-            className={`produto-btn ${editando ? "editar" : "adicionar"}`}
-            onClick={editando ? SalvarEdicao : AddProdutos}
-          >
-            {editando ? "Salvar Produto" : "Adicionar Produto"}
-          </button>
+              <button
+                className={`produto-btn ${editando ? "editar" : "adicionar"}`}
+                onClick={editando ? SalvarEdicao : AddProdutos}
+              >
+                {editando ? "Salvar Produto" : "Adicionar Produto"}
+              </button>
 
-          <div>
-            {produtos.map((produto) => {
-              return (
-                <Produto
-                  key={produto.id}
-                  id={produto.id}
-                  nome={produto.nome}
-                  quantidade={produto.quantidade}
-                  onClickDelete={DeleteProduto}
-                  onClickEdit={EditProduto}
-                />
-              );
-            })}
+              <div>
+                {produtos.length === 0 ? (
+                  <p className="mensagem-vazia">Nenhum Produto Cadastrado.</p>
+                ) : (
+                  produtos.map((produto) => {
+                    return (
+                      <Produto
+                        key={produto.id}
+                        id={produto.id}
+                        nome={produto.nome}
+                        quantidade={produto.quantidade}
+                        onClickDelete={DeleteProduto}
+                        onClickEdit={EditProduto}
+                      />
+                    );
+                  })
+                )}
+              </div>
+               
+            </div>
           </div>
-        </div>
-        <p>Desensolvido por: André Souza - 2025</p>
+        
+        </main>
+        <Footer texto="Desenvolvido por: André souza Junho 2025" />
       </div>
     </>
   );

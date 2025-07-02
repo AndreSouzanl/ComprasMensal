@@ -1,0 +1,40 @@
+.container-mensagem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+  padding: 10px;
+  margin-top: 30px;
+
+   width: 80%;           /* ← adicionado */
+  max-width: 600px;     /* ← opcional: para limitar o tamanho */
+  margin-left: auto;    /* ← centraliza horizontalmente */
+  margin-right: auto;   /* ← idem */
+  border-radius: 8px;   /* ← visualmente mais bonito */
+}
+
+.mensagem {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.container-mensagem.sucesso {
+  background-color: #2ecc71;
+}
+
+.container-mensagem.erro {
+  background-color: #e74c3c;
+}
+
+.container-mensagem.aviso {
+  background-color: #f39c12;
+}
+
+.container-mensagem.escondida {
+  opacity: 0;
+}

@@ -1,6 +1,6 @@
 .container-Produto {
   /* background-color: rgb(67, 67, 69); */
-  
+
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 90%;
+  width: 50%;
   margin: 0 auto;
   padding: 20px;
 }
@@ -30,3 +30,21 @@
   transition: background-color 0.3s ease;
 }
 
+.mensagem-vazia {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 20px;
+  color: #666;
+}
+
+@media (max-width: 600px) {
+  .formInput {
+    width: 100%;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .container-Produto {
+    padding: 15px;
+  }
+}

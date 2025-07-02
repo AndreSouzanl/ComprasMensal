@@ -6,6 +6,7 @@
   align-items: center;
   color: white;
   margin: 10px auto;
+   
 }
 
 .tabela-container {
@@ -44,15 +45,6 @@
 .produto-acoes svg:hover {
   transform: scale(1.2);
 }
-
-@media (max-width: 600px) {
-  .tabela-produto th,
-  .tabela-produto td {
-    font-size: 14px;
-    padding: 6px 8px;
-  }
-}
-
 .produto-acoes {
   display: flex;
   align-items: center;
@@ -61,4 +53,13 @@
 
 .produto-btn.editar {
   background-color: green;
+}
+
+@media (max-width: 600px) {
+  .tabela-produto th,
+  .tabela-produto td {
+    font-size: 14px;
+    padding: 6px 8px;
+    font-size: 1.2rem
+  }
 }
