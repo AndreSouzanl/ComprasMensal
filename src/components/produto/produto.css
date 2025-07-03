@@ -1,11 +1,13 @@
-
-
+.produto-acoes {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
 
 .produto-acoes svg {
   cursor: pointer;
   transition: transform 0.2s;
- 
-  
 }
 
 .produto-acoes svg:hover {
@@ -15,7 +17,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-   
 }
 
 .produto-btn.editar {
@@ -37,6 +38,3 @@
     height: 20px;
   }
 }
-
-
-
