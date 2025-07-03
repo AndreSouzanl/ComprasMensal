@@ -62,16 +62,24 @@ export default function Pagina() {
   // Adicionar novo produto
   function AddProdutos() {
     if (nome === "" || quantidade === "") {
-      setMensagem({ texto: "Os campos nome e quantidade são obrigatórios.", tipo: "aviso" });
+      setMensagem({
+        texto: "Os campos nome e quantidade são obrigatórios.",
+        tipo: "aviso",
+      });
       return;
     }
     if (produtos.some((p) => p.nome.toLowerCase() === nome.toLowerCase())) {
-      setMensagem({ texto: "Já existe um produto com este nome.", tipo: "aviso" });
+      setMensagem({
+        texto: "Já existe um produto com este nome.",
+        tipo: "aviso",
+      });
       return;
     }
 
     const novoProduto = { id: uuid(), nome, quantidade, edit: false };
-    const novaLista = [...produtos, novoProduto].sort((a, b) => a.nome.localeCompare(b.nome));
+    const novaLista = [...produtos, novoProduto].sort((a, b) =>
+      a.nome.localeCompare(b.nome)
+    );
     setProdutos(novaLista);
     setNome("");
     setQuantidade("");
@@ -106,11 +114,13 @@ export default function Pagina() {
   function SalvarEdicao() {
     const produtoEditando = produtos.find((p) => p.edit);
     if (produtoEditando) {
-      const produtosAtualizados = produtos.map((produto) =>
-        produto.id === produtoEditando.id
-          ? { ...produto, nome, quantidade, edit: false }
-          : produto
-      ).sort((a, b) => a.nome.localeCompare(b.nome));
+      const produtosAtualizados = produtos
+        .map((produto) =>
+          produto.id === produtoEditando.id
+            ? { ...produto, nome, quantidade, edit: false }
+            : produto
+        )
+        .sort((a, b) => a.nome.localeCompare(b.nome));
       setProdutos(produtosAtualizados);
       setEditando(false);
       setNome("");
@@ -127,12 +137,12 @@ export default function Pagina() {
   }
 
   return (
-    <div className="container-main">
+    <div className="grid">
       <Header icone={<IconHome size={28} />} titulo="Minha Lista de Compras" />
 
       <ExibirMensagem mensagem={mensagem} />
 
-      <main>
+      <main className="main">
         <div className="container-Produto">
           <div className="formInput" ref={formRef}>
             <input
@@ -159,7 +169,7 @@ export default function Pagina() {
             {produtos.length === 0 ? (
               <p className="mensagem-vazia">Nenhum Produto Cadastrado.</p>
             ) : (
-              <div className="tabela-container">
+              <div>
                 <table className="tabela-produto">
                   <thead>
                     <tr>
@@ -197,7 +207,9 @@ export default function Pagina() {
                 Página {paginaAtual} de {totalPaginas}
               </span>
               <button
-                onClick={() => setPaginaAtual((p) => Math.min(p + 1, totalPaginas))}
+                onClick={() =>
+                  setPaginaAtual((p) => Math.min(p + 1, totalPaginas))
+                }
                 disabled={paginaAtual === totalPaginas}
               >
                 <IconPlus size={20} />

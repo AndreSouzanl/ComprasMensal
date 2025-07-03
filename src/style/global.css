@@ -33,11 +33,7 @@ html, body {
   focus: ring-opacity-30;
 }
 
-.container-main {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* altura mínima da tela */
-}
+
 
 main {
   flex: 1;
